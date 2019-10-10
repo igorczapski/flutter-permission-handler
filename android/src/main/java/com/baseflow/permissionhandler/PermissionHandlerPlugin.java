@@ -47,12 +47,11 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
   private static final int PERMISSION_GROUP_LOCATION = 0;
   private static final int PERMISSION_GROUP_LOCATION_ALWAYS = 1;
   private static final int PERMISSION_GROUP_LOCATION_WHEN_IN_USE = 2;
-  private static final int PERMISSION_GROUP_MEDIA_LIBRARY = 3;
-  private static final int PERMISSION_GROUP_PHOTOS = 4;
-  private static final int PERMISSION_GROUP_SENSORS = 5;
-  private static final int PERMISSION_GROUP_STORAGE = 6;
-  private static final int PERMISSION_GROUP_IGNORE_BATTERY_OPTIMIZATIONS = 7;
-  private static final int PERMISSION_GROUP_UNKNOWN = 8;
+  private static final int PERMISSION_GROUP_PHOTOS = 3;
+  private static final int PERMISSION_GROUP_SENSORS = 4;
+  private static final int PERMISSION_GROUP_STORAGE = 5;
+  private static final int PERMISSION_GROUP_IGNORE_BATTERY_OPTIMIZATIONS = 6;
+  private static final int PERMISSION_GROUP_UNKNOWN = 7;
 
   private PermissionHandlerPlugin(Registrar mRegistrar) {
     this.mRegistrar = mRegistrar;
@@ -63,7 +62,6 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
       PERMISSION_GROUP_LOCATION,
       PERMISSION_GROUP_LOCATION_ALWAYS,
       PERMISSION_GROUP_LOCATION_WHEN_IN_USE,
-      PERMISSION_GROUP_MEDIA_LIBRARY,
       PERMISSION_GROUP_PHOTOS,
       PERMISSION_GROUP_SENSORS,
       PERMISSION_GROUP_STORAGE,
@@ -482,7 +480,6 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
           permissionNames.add(Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
         break;
 
-      case PERMISSION_GROUP_MEDIA_LIBRARY:
       case PERMISSION_GROUP_PHOTOS:
       case PERMISSION_GROUP_UNKNOWN:
         return null;

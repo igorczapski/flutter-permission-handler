@@ -95,34 +95,29 @@ class PermissionGroup {
   /// iOS: CoreLocation - WhenInUse
   static const PermissionGroup locationWhenInUse = PermissionGroup._(2);
 
-  /// Android: None
-  /// iOS: MPMediaLibrary
-  static const PermissionGroup mediaLibrary = PermissionGroup._(3);
-
   /// Android: Nothing
   /// iOS: Photos
-  static const PermissionGroup photos = PermissionGroup._(4);
+  static const PermissionGroup photos = PermissionGroup._(3);
 
   /// Android: Body Sensors
   /// iOS: CoreMotion
-  static const PermissionGroup sensors = PermissionGroup._(5);
+  static const PermissionGroup sensors = PermissionGroup._(4);
 
   /// Android: External Storage
   /// iOS: Nothing
-  static const PermissionGroup storage = PermissionGroup._(6);
+  static const PermissionGroup storage = PermissionGroup._(5);
 
   /// Android: Ignore Battery Optimizations
   static const PermissionGroup ignoreBatteryOptimizations =
-      PermissionGroup._(7);
+      PermissionGroup._(6);
 
   /// The unknown permission only used for return type, never requested
-  static const PermissionGroup unknown = PermissionGroup._(8);
+  static const PermissionGroup unknown = PermissionGroup._(7);
 
   static const List<PermissionGroup> values = <PermissionGroup>[
     location,
     locationAlways,
     locationWhenInUse,
-    mediaLibrary,
     photos,
     sensors,
     storage,
@@ -134,7 +129,6 @@ class PermissionGroup {
     'location',
     'locationAlways',
     'locationWhenInUse',
-    'mediaLibrary',
     'photos',
     'sensors',
     'storage',

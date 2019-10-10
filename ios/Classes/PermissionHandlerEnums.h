@@ -9,7 +9,6 @@ typedef NS_ENUM(int, PermissionGroup) {
     PermissionGroupLocation = 0,
     PermissionGroupLocationAlways,
     PermissionGroupLocationWhenInUse,
-    PermissionGroupMediaLibrary,
     PermissionGroupPhotos,
     PermissionGroupSensors,
     PermissionGroupStorage,

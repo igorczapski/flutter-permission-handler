@@ -79,8 +79,6 @@
             case PermissionGroupLocationAlways:
             case PermissionGroupLocationWhenInUse:
             return [[LocationPermissionStrategy alloc] initWithLocationManager];
-            case PermissionGroupMediaLibrary:
-            return [MediaLibraryPermissionStrategy new];
             case PermissionGroupPhotos:
             return [PhotoPermissionStrategy new];
             case PermissionGroupSensors:

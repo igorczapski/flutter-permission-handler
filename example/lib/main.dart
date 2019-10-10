@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
                               PermissionGroup.ignoreBatteryOptimizations;
                     } else {
                       return permission != PermissionGroup.unknown &&
-                          permission != PermissionGroup.mediaLibrary &&
                           permission != PermissionGroup.photos;
                     }
                   })
