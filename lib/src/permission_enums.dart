@@ -87,7 +87,9 @@ class PermissionGroup {
   /// iOS: CoreLocation (Always and WhenInUse)
   static const PermissionGroup location = PermissionGroup._(0);
 
-  /// Android: Fine and Coarse Location
+  /// Android:
+  ///   When running on Android < Q: Fine and Coarse Location
+  ///   When running on Android Q and above: Background Location Permission
   /// iOS: CoreLocation - Always
   static const PermissionGroup locationAlways = PermissionGroup._(1);
 
@@ -104,7 +106,7 @@ class PermissionGroup {
   static const PermissionGroup sensors = PermissionGroup._(4);
 
   /// Android: External Storage
-  /// iOS: Nothing
+  /// iOS: Access to folders like `Documents` or `Downloads`. Implicitly granted.
   static const PermissionGroup storage = PermissionGroup._(5);
 
   /// Android: Ignore Battery Optimizations

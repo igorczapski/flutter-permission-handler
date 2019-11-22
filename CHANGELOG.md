@@ -1,3 +1,13 @@
+## 4.0.0
+
+* iOS: Added support for requesting permissions on the DOCUMENTS and DOWNLOADS folder (thanks to @phranck);
+* Androis: Fix the PROCESS_OUTGOING_CALLS permissions which have been deprecated in API 29.
+
+## 3.3.0
+
+* Android: Add support for requesting the background location permission within the `locationAlways` group.
+* Android: Update AGP, Gradle and AndroidX dependencies
+
 ## 3.2.2
 
 * Fixed problem with dependency on specific version of gradle wrapper on Android.

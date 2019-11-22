@@ -205,6 +205,12 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
 
   @PermissionStatus
   private int checkPermissionStatus(@PermissionGroup int permission) {
+    final Context context = mRegistrar.activity() == null ? mRegistrar.activeContext() : mRegistrar.activity();
+    if (context == null) {
+      Log.d(LOG_TAG, "Unable to detect current Activity or App Context.");
+      return PERMISSION_STATUS_UNKNOWN;
+    }
+
     final List<String> names = getManifestNames(permission);
 
     if (names == null) {
@@ -216,12 +222,6 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
     //if no permissions were found then there is an issue and permission is not set in Android manifest
     if (names.size() == 0) {
       Log.d(LOG_TAG, "No permissions found in manifest for: " + permission);
-      return PERMISSION_STATUS_UNKNOWN;
-    }
-
-    final Context context = mRegistrar.activity() == null ? mRegistrar.activeContext() : mRegistrar.activity();
-    if (context == null) {
-      Log.d(LOG_TAG, "Unable to detect current Activity or App Context.");
       return PERMISSION_STATUS_UNKNOWN;
     }
 
@@ -370,31 +370,51 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
     for (int i = 0; i < permissions.length; i++) {
       @PermissionGroup final int permission = parseManifestName(permissions[i]);
       if (permission == PERMISSION_GROUP_UNKNOWN)
-        continue;
+          continue;
 
-      if (permission == PERMISSION_GROUP_LOCATION) {
-        final Context context = mRegistrar.activity() == null ? mRegistrar.activeContext() : mRegistrar.activity();
-        final boolean isLocationServiceEnabled = context != null && isLocationServiceEnabled(context);
-        @PermissionStatus int permissionStatus = toPermissionStatus(grantResults[i]);
-        if (permissionStatus == PERMISSION_STATUS_GRANTED && !isLocationServiceEnabled) {
-          permissionStatus = PERMISSION_STATUS_DISABLED;
-        }
+      if (permission == PERMISSION_GROUP_LOCATION_ALWAYS) {
+          @PermissionStatus int permissionStatus = determineActualLocationStatus(grantResults[i]);
 
-        if (!mRequestResults.containsKey(PERMISSION_GROUP_LOCATION_ALWAYS)) {
-          mRequestResults.put(PERMISSION_GROUP_LOCATION_ALWAYS, permissionStatus);
-        }
+          if (!mRequestResults.containsKey(PERMISSION_GROUP_LOCATION_ALWAYS)) {
+              mRequestResults.put(PERMISSION_GROUP_LOCATION_ALWAYS, permissionStatus);
+          }
+      } else if (permission == PERMISSION_GROUP_LOCATION) {
+          @PermissionStatus int permissionStatus = determineActualLocationStatus(grantResults[i]);
 
-        if (!mRequestResults.containsKey(PERMISSION_GROUP_LOCATION_WHEN_IN_USE)) {
-          mRequestResults.put(PERMISSION_GROUP_LOCATION_WHEN_IN_USE, permissionStatus);
-        }
+          if (VERSION.SDK_INT < VERSION_CODES.Q) {
+              if (!mRequestResults.containsKey(PERMISSION_GROUP_LOCATION_ALWAYS)) {
+                  mRequestResults.put(PERMISSION_GROUP_LOCATION_ALWAYS, permissionStatus);
+              }
+          }
 
-        mRequestResults.put(permission, permissionStatus);
+          if (!mRequestResults.containsKey(PERMISSION_GROUP_LOCATION_WHEN_IN_USE)) {
+              mRequestResults.put(PERMISSION_GROUP_LOCATION_WHEN_IN_USE, permissionStatus);
+          }
+
+          mRequestResults.put(permission, permissionStatus);
       } else if (!mRequestResults.containsKey(permission)) {
-        mRequestResults.put(permission, toPermissionStatus(grantResults[i]));
+          mRequestResults.put(permission, toPermissionStatus(grantResults[i]));
       }
     }
 
     processResult();
+  }
+
+  /**
+   * Crosschecks a permission grant result with the location service availability.
+   *
+   * @param grantResult Grant Result as received from the Android system.
+   */
+  @PermissionStatus
+  private int determineActualLocationStatus(int grantResult) {
+    final Context context =
+        mRegistrar.activity() == null ? mRegistrar.activeContext() : mRegistrar.activity();
+    final boolean isLocationServiceEnabled = context != null && isLocationServiceEnabled(context);
+    @PermissionStatus int permissionStatus = toPermissionStatus(grantResult);
+    if (permissionStatus == PERMISSION_STATUS_GRANTED && !isLocationServiceEnabled) {
+      permissionStatus = PERMISSION_STATUS_DISABLED;
+    }
+    return permissionStatus;
   }
 
   private void handleIgnoreBatteryOptimizationsRequest(boolean granted) {
@@ -450,6 +470,11 @@ public class PermissionHandlerPlugin implements MethodCallHandler {
 
     switch (permission) {
       case PERMISSION_GROUP_LOCATION_ALWAYS:
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+          if (hasPermissionInManifest(Manifest.permission.ACCESS_BACKGROUND_LOCATION))
+            permissionNames.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+        }
+
       case PERMISSION_GROUP_LOCATION_WHEN_IN_USE:
       case PERMISSION_GROUP_LOCATION:
         if (hasPermissionInManifest(Manifest.permission.ACCESS_COARSE_LOCATION))

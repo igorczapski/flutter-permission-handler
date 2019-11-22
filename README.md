@@ -22,7 +22,7 @@ To use this plugin, add `permission_handler` as a [dependency in your pubspec.ya
 
 ```yaml
 dependencies:
-  permission_handler: '^3.2.0'
+  permission_handler: '^4.0.0'
 ```
 
 > **NOTE:** As of version 3.1.0 the permission_handler plugin switched to the AndroidX version of the Android Support Libraries. This means you need to make sure your Android project is also upgraded to support AndroidX. Detailed instructions can be found [here](https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility). 
@@ -110,53 +110,21 @@ enum PermissionGroup {
   /// The unknown permission only used for return type, never requested
   unknown,
 
-  /// Android: Calendar
-  /// iOS: Calendar (Events)
-  calendar,
-
-  /// Android: Camera
-  /// iOS: Photos (Camera Roll and Camera)
-  camera,
-
-  /// Android: Contacts
-  /// iOS: AddressBook
-  contacts,
-
   /// Android: Fine and Coarse Location
   /// iOS: CoreLocation (Always and WhenInUse)
   location,
-
-  /// Android: Microphone
-  /// iOS: Microphone
-  microphone,
-
-  /// Android: Phone
-  /// iOS: Nothing
-  phone,
 
   /// Android: Nothing
   /// iOS: Photos
   photos,
 
-  /// Android: Nothing
-  /// iOS: Reminders
-  reminders,
-
   /// Android: Body Sensors
   /// iOS: CoreMotion
   sensors,
 
-  /// Android: Sms
-  /// iOS: Nothing
-  sms,
-
   /// Android: External Storage
   /// iOS: Nothing
   storage,
-
-  /// Android: Microphone
-  /// iOS: Speech
-  speech,
 
   /// Android: Fine and Coarse Location
   /// iOS: CoreLocation - Always
@@ -165,10 +133,6 @@ enum PermissionGroup {
   /// Android: Fine and Coarse Location
   /// iOS: CoreLocation - WhenInUse
   locationWhenInUse,
-
-  /// Android: None
-  /// iOS: MPMediaLibrary
-  mediaLibrary
 }
 ```
 
